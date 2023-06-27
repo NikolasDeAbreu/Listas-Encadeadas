@@ -1,0 +1,44 @@
+import random
+class NodoLista:
+    def __init__(self, dado=None,next_nodo=None):
+        self.dado = dado
+        self.next = next_nodo
+class ListaEncadeada:
+    def __init__(self):
+        self.head = None
+
+    def inserir(self,valor):
+        if self.head is None:
+            self.head = NodoLista(valor)
+            self.head.next = self.head
+        else:
+            NovoNodo = NodoLista(valor)
+            AuxNodo = self.head
+            while AuxNodo.next != self.head:
+                AuxNodo = AuxNodo.next
+            AuxNodo.next = NovoNodo
+            NovoNodo.next = self.head
+
+    def mostra(self):
+        print(self.head.dado)
+        AuxNodo = self.head.next
+        while AuxNodo != self.head:
+            print(AuxNodo.dado)
+            AuxNodo = AuxNodo.next
+
+    def media(self,count=0):
+        AuxNodo = self.head
+        total = 0
+        while True:
+            total += AuxNodo.dado
+            count += 1
+            AuxNodo = AuxNodo.next
+            if AuxNodo == self.head:
+                break
+        return total/count
+
+valores = [58,40,32,1,10]
+lista = ListaEncadeada()
+for itr in valores:
+    lista.inserir(itr)
+print("A média é ",lista.media())
