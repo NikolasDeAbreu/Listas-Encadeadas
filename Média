@@ -26,19 +26,18 @@ class ListaEncadeada:
             print(AuxNodo.dado)
             AuxNodo = AuxNodo.next
 
-    def media(self,count=0):
-        AuxNodo = self.head
-        total = 0
-        while True:
-            total += AuxNodo.dado
-            count += 1
-            AuxNodo = AuxNodo.next
-            if AuxNodo == self.head:
-                break
-        return total/count
+    def media(self,nodo=None,count=0,total=0):
+        if nodo is None:
+            nodo = self.head
+        total += nodo.dado
+        count += 1
+        if nodo.next != self.head:
+            return self.media(nodo.next,count,total)
+        else:
+            return total/count
 
 valores = [58,40,32,1,10]
 lista = ListaEncadeada()
 for itr in valores:
     lista.inserir(itr)
-print("A média é ",lista.media())
+print(lista.media())
