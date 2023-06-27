@@ -1,0 +1,97 @@
+import random
+class NodoLista:
+    def __init__(self, dado=None, prev_nodo=None,next_nodo=None):
+        self.dado = dado
+        self.next = next_nodo
+        self.prev = prev_nodo
+
+    def __repr__(self):
+        return '%s -> %s' % (self.dado,self.next)
+
+class ListaEncadeada:
+    def __init__(self):
+        self.tail = None
+        self.head = None
+
+    def __repr__(self):
+        return '[' + str(self.head) + ']'
+
+    def inserir(self,valor):
+        AuxNodo = NodoLista(valor)
+        if self.tail.dado is None:
+            self.head.dado = valor
+            self.tail.dado = valor
+        else:
+            AuxNodo.prev = self.tail
+            self.tail.next = AuxNodo
+            self.tail = self.tail.next
+            if self.head.next is None:
+                self.head.next = AuxNodo
+
+    def inserirInicio(self,valor):
+        AuxNodo = NodoLista(valor)
+        AuxNodo.next = self.head
+        self.head.prev = AuxNodo
+        self.head = self.head.prev
+
+    def troca(self,nodo):
+        aux = self.tail.dado
+        self.tail.dado = nodo.dado
+        nodo.dado = aux
+
+    def sort(self):
+        self.tail = self.head
+        AuxNodo = NodoLista()
+        AuxNodo = self.tail.next
+        while True:
+            while True:
+                if self.tail.dado > AuxNodo.dado:
+                    self.troca(AuxNodo)
+                if AuxNodo.next is not None:
+                    AuxNodo = AuxNodo.next
+                else:
+                    if self.tail.dado > AuxNodo.dado:
+                        self.troca(AuxNodo)
+                    break
+            if self.tail.next is not None:
+                self.tail = self.tail.next
+                if self.tail.next is not None:
+                    AuxNodo = self.tail.next
+                else:
+                    break
+
+    def remove(self,valor,elemRead=0):
+        if elemRead == 0:
+            self.tail = self.head
+        if self.tail.dado == valor:
+            if self.tail.prev is None and self.tail.next is None:
+                self.tail = None
+                self.head = None
+            elif self.tail.prev is None and self.tail.next is not None:
+                self.tail = self.tail.next
+                self.head = self.tail
+                self.head.prev = None
+            elif self.tail.prev is not None and self.tail.next is None:
+                self.tail = self.tail.prev
+                self.tail.next = None
+            else:
+                self.tail.next.prev = self.tail.prev
+                self.tail.prev.next = self.tail.next
+                if elemRead == 1:
+                    self.head.next = self.tail.next
+        if self.tail.next is not None:
+            self.tail = self.tail.next
+            self.remove(valor,elemRead+1)
+
+i = 0
+lista = ListaEncadeada()
+lista.tail = NodoLista()
+lista.head = NodoLista()
+while i < 10:
+    lista.inserir(random.randint(0,100))
+    i += 1
+print(lista)
+num = input("Digite um valor: ")
+num = int(num)
+lista.remove(num)
+print(lista)
