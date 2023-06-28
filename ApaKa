@@ -1,0 +1,67 @@
+class NodoLista:
+    def __init__(self, dado=None, prev_nodo=None,next_nodo=None):
+        self.dado = dado
+        self.next = next_nodo
+        self.prev = prev_nodo
+
+class ListaEncadeada:
+    def __init__(self):
+        self.head = None
+
+    def inserir(self,valor):
+        if self.head is None:
+            self.head = NodoLista(valor)
+            self.head.prev = self.head
+            self.head.next = self.head
+        else:
+            NovoNodo = NodoLista(valor)
+            AuxNodo = self.head
+            while AuxNodo.next != self.head:
+                AuxNodo = AuxNodo.next
+            AuxNodo.next = NovoNodo
+            NovoNodo.prev = AuxNodo
+            NovoNodo.next = self.head
+            self.head.prev = NovoNodo
+
+    def mostra(self,nodo=None):
+        if nodo is None:
+            nodo = self.head
+        print(nodo.dado)
+        if nodo.next != self.head:
+            self.mostra(nodo.next)
+
+    def remove(self,valor,nodo=None):
+        if nodo is None:
+            nodo = self.head
+        if self.head.dado == valor:
+            self.head.prev.next = self.head.next
+            self.head.next.prev = self.head.prev
+            self.head = self.head.next
+        else:
+            if nodo.dado == valor:
+                nodo.prev.next = nodo.next
+                nodo.next.prev = nodo.prev
+                if nodo.next == self.head:
+                    self.head.prev = nodo.prev
+        if nodo.next != self.head:
+            self.remove(valor,nodo.next)
+
+    def apaKa(self,k,node=None):
+        if node is None:
+            node = self.head
+        if self.head.dado > k:
+            self.remove(self.head.dado)
+            node = self.head
+        else:
+            if node.dado > k:
+                self.remove(node.dado,node)
+        if node.next != self.head:
+            self.apaKa(k,node.next)
+
+valores = [1,2,3,4,5]
+lista = ListaEncadeada()
+for itr in valores:
+    lista.inserir(itr)
+lista.apaKa(int(input("Digite um valor: ")))
+lista.mostra()
+
